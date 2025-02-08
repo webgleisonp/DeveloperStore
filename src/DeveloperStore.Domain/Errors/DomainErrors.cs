@@ -11,6 +11,8 @@ public static class DomainErrors
         public static Error UserNotFound => new("404", "User not found");
 
         public static Error UserExists => new("400", "User exists.");
+
+        public static Error InvalidCredentials => new("400", "Invalid credentials");
     }
 
     public static class Pagination

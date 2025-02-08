@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using DeveloperStore.Application;
 using DeveloperStore.Infra.Data;
+using DeveloperStore.Infra.Security;
 using DeveloperStore.Presentation.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,7 @@ builder.Services.AddApiVersioning(options =>
 builder.Services.AddEndpoints();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructureData(builder.Configuration);
+builder.Services.AddInfraSecurity(builder.Configuration);
 builder.Services.AddProblemDetails();
 
 var app = builder.Build();
@@ -33,14 +35,17 @@ var apiVersionSet = app.NewApiVersionSet()
                         .ReportApiVersions()
                         .Build();
 
-RouteGroupBuilder group = app.MapGroup("api/v{version:apiVersion}")
-    .WithApiVersionSet(apiVersionSet);
-
-app.MapEndpoints(group);
-
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+RouteGroupBuilder group = app.MapGroup("api/v{version:apiVersion}")
+    .WithApiVersionSet(apiVersionSet);
+
+app.MapEndpoints(group);
 
 app.Run();

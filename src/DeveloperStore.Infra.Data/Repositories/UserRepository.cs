@@ -20,14 +20,21 @@ internal sealed class UserRepository(DeveloperStoreDbContext dbContext) : IUserR
 
     public async Task<User> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
     {
-        var data = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+        var data = await dbContext.Users.SingleOrDefaultAsync(u => u.Email == email, cancellationToken);
 
         return data!;
     }
 
     public async Task<User> GetUserByIdAsync(int id, CancellationToken cancellationToken)
     {
-        var data = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+        var data = await dbContext.Users.SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
+
+        return data!;
+    }
+
+    public async Task<User> GetUserByUserNameAndPasswordAsync(string userName, string password, CancellationToken cancellationToken)
+    {
+        var data = await dbContext.Users.SingleOrDefaultAsync(u => u.UserName == userName && u.Password == password, cancellationToken);
 
         return data!;
     }

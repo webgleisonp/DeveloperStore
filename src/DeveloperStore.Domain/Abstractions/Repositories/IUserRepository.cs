@@ -8,6 +8,7 @@ public interface IUserRepository
     Task DeleteUserAsync(User userExists, CancellationToken cancellationToken);
     Task<User> GetUserByEmailAsync(string email, CancellationToken cancellationToken);
     Task<User> GetUserByIdAsync(int id, CancellationToken cancellationToken);
+    Task<User> GetUserByUserNameAndPasswordAsync(string userName, string password, CancellationToken cancellationToken);
     Task<IEnumerable<User>> GetUsersAsync(CancellationToken cancellationToken);
     Task UpdateUserAsync(User userExists, CancellationToken cancellationToken);
 }

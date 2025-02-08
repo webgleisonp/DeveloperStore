@@ -6,14 +6,16 @@ using MediatR;
 
 namespace DeveloperStore.Application.Usecases.Users;
 
-internal sealed class GetUsersQueryHandler(IUserRepository userRepository) : IRequestHandler<GetUsersQuery, Result<IEnumerable<UserResponse>>>
+internal sealed class GetUsersQueryHandler(IUserRepository userRepository) : IRequestHandler<GetUsersQuery, PagedResult<UserResponse>>
 {
-    public async Task<Result<IEnumerable<UserResponse>>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResult<UserResponse>> Handle(
+        GetUsersQuery request,
+        CancellationToken cancellationToken)
     {
         var users = await userRepository.GetUsersAsync(cancellationToken);
 
-        if (users is null || users.Count() == 0)
-            return Result.Failure<IEnumerable<UserResponse>>(DomainErrors.User.UsersTableIsEmpty);
+        if (users is null || !users.Any())
+            return PagedResult<UserResponse>.Failure(DomainErrors.User.UsersTableIsEmpty);
 
         if (!string.IsNullOrWhiteSpace(request.Order))
         {
@@ -47,24 +49,26 @@ internal sealed class GetUsersQueryHandler(IUserRepository userRepository) : IRe
             users = (orderedUsers is not null || orderedUsers.Count() == 0) ? orderedUsers.AsEnumerable() : users;
         }
 
+        var totalItems = users.Count();
+        var currentPage = request.Page ?? 1;
+        var pageSize = request.PageSize ?? totalItems;
+        var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+
         if (request.Page.HasValue && request.PageSize.HasValue)
         {
-            if (request.Page.Value <= 0)
-                return Result.Failure<IEnumerable<UserResponse>>(DomainErrors.Pagination.InvalidPage);
+            if (currentPage <= 0)
+                return PagedResult<UserResponse>.Failure(DomainErrors.Pagination.InvalidPage);
 
-            if (request.PageSize.Value <= 0)
-                return Result.Failure<IEnumerable<UserResponse>>(DomainErrors.Pagination.InvalidPageSize);
+            if (pageSize <= 0)
+                return PagedResult<UserResponse>.Failure(DomainErrors.Pagination.InvalidPageSize);
 
-            var totalItems = users.Count();
-            var totalPages = (int)Math.Ceiling(totalItems / (double)request.PageSize.Value);
-
-            if (request.Page.Value > totalPages)
-                return Result.Failure<IEnumerable<UserResponse>>(
-                    DomainErrors.Pagination.PageExceedsLimit(request.Page.Value, totalPages));
+            if (currentPage > totalPages)
+                return PagedResult<UserResponse>.Failure(
+                    DomainErrors.Pagination.PageExceedsLimit(currentPage, totalPages));
 
             users = users
-                .Skip((request.Page.Value - 1) * request.PageSize.Value)
-                .Take(request.PageSize.Value);
+                .Skip((currentPage - 1) * pageSize)
+                .Take(pageSize);
         }
 
         var response = users.Select(user => new UserResponse(
@@ -79,7 +83,11 @@ internal sealed class GetUsersQueryHandler(IUserRepository userRepository) : IRe
             user.Role
         ));
 
-        return Result.Success(response);
+        return PagedResult<UserResponse>.Success(
+            response,
+            totalItems,
+            currentPage,
+            totalPages);
     }
 
     private static object? GetPropertyValue(User user, string propertyName)

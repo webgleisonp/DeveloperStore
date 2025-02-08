@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DeveloperStore.Infra.Data\DeveloperStore.Infra.Data.csproj" />
+    <ProjectReference Include="..\DeveloperStore.Infra.Security\DeveloperStore.Infra.Security.csproj" />
     <ProjectReference Include="..\DeveloperStore.Presentation.Endpoints\DeveloperStore.Presentation.Endpoints.csproj" />
   </ItemGroup>
 
