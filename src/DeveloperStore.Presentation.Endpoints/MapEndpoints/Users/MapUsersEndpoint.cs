@@ -105,6 +105,7 @@ internal sealed class MapUsersEndpoint : IEndpointMap
     {
         var command = new CreateUserCommand(
             request.Email,
+            request.UserName,
             request.Password,
             request.Name,
             request.Address,
@@ -131,7 +132,7 @@ internal sealed class MapUsersEndpoint : IEndpointMap
         [FromBody] UserRequest request,
         CancellationToken cancellationToken)
     {
-        var command = new UpdateUserCommand(id, request.Email, request.Password, request.Name, request.Address, request.Phone, request.Status, request.Role);
+        var command = new UpdateUserCommand(id, request.Email, request.UserName, request.Password, request.Name, request.Address, request.Phone, request.Status, request.Role);
         var result = await sender.Send(command, cancellationToken);
 
         if (result.IsFailure && result.Errors.Any())

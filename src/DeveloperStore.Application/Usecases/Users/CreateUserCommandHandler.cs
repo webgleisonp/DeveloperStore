@@ -33,6 +33,7 @@ public sealed class CreateUserCommandHandler(IValidator<CreateUserCommand> valid
         var newUser = new User
         {
             Email = request.Email,
+            UserName = request.UserName,
             Password = request.Password,
             Name = request.Name,
             Address = request.Address,
@@ -45,6 +46,6 @@ public sealed class CreateUserCommandHandler(IValidator<CreateUserCommand> valid
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success(new UserResponse(newUser.Id, newUser.Email, newUser.Password, newUser.Name, newUser.Address, newUser.Phone, newUser.Status, newUser.Role));
+        return Result.Success(new UserResponse(newUser.Id, newUser.Email, newUser.UserName, newUser.Password, newUser.Name, newUser.Address, newUser.Phone, newUser.Status, newUser.Role));
     }
 }

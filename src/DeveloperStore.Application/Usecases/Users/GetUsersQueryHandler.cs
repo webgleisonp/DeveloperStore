@@ -70,6 +70,7 @@ internal sealed class GetUsersQueryHandler(IUserRepository userRepository) : IRe
         var response = users.Select(user => new UserResponse(
             user.Id,
             user.Email,
+            user.UserName,
             user.Password,
             user.Name,
             user.Address,

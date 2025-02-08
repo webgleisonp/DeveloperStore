@@ -11,9 +11,14 @@ public sealed class UpdateUserCommandValidator : AbstractValidator<UpdateUserCom
         RuleFor(p => p.Email)
             .NotEmpty()
             .EmailAddress();
+        RuleFor(p => p.UserName)
+            .NotEmpty()
+            .MinimumLength(8)
+            .MaximumLength(12);
         RuleFor(p => p.Password)
             .NotEmpty()
-            .MinimumLength(8);
+            .MinimumLength(8)
+            .MaximumLength(12);
         RuleFor(p => p.Name)
             .NotNull()
             .SetValidator(new NameValidator());

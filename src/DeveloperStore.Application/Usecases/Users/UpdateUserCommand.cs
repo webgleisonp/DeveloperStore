@@ -5,4 +5,4 @@ using MediatR;
 
 namespace DeveloperStore.Application.Usecases.Users;
 
-public sealed record UpdateUserCommand(int Id, string Email, string Password, Name Name, Address Address, string Phone, Status Status, Role Role) : IRequest<Result<UserResponse>>;
+public sealed record UpdateUserCommand(int Id, string Email, string UserName, string Password, Name Name, Address Address, string Phone, Status Status, Role Role) : IRequest<Result<UserResponse>>;

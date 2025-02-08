@@ -14,6 +14,6 @@ internal sealed class GetUserByIdQueryHandler(IUserRepository userRepository) : 
         if (userExists is null)
             return Result.Failure<UserResponse>(DomainErrors.User.UserNotFound);
 
-        return Result.Success(new UserResponse(userExists.Id, userExists.Email, userExists.Password, userExists.Name, userExists.Address, userExists.Phone, userExists.Status, userExists.Role));
+        return Result.Success(new UserResponse(userExists.Id, userExists.Email, userExists.UserName, userExists.Password, userExists.Name, userExists.Address, userExists.Phone, userExists.Status, userExists.Role));
     }
 }

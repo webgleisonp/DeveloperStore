@@ -43,6 +43,6 @@ internal sealed class DeleteUserCommandHandler(IValidator<DeleteUserCommand> val
 
         await unityOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success(new UserResponse(userExists.Id, userExists.Email, userExists.Password, userExists.Name, userExists.Address, userExists.Phone, userExists.Status, userExists.Role));
+        return Result.Success(new UserResponse(userExists.Id, userExists.Email, userExists.UserName, userExists.Password, userExists.Name, userExists.Address, userExists.Phone, userExists.Status, userExists.Role));
     }
 }

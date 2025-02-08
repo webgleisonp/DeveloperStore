@@ -30,6 +30,7 @@ internal sealed class UpdateUserCommandHandler(IValidator<UpdateUserCommand> val
             return Result.Failure<UserResponse>(DomainErrors.User.UserNotFound);
 
         userExists.Email = request.Email;
+        userExists.UserName = request.UserName;
         userExists.Password = request.Password;
         userExists.Name = request.Name;
         userExists.Address = request.Address;
@@ -41,6 +42,6 @@ internal sealed class UpdateUserCommandHandler(IValidator<UpdateUserCommand> val
 
         await unityOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success(new UserResponse(userExists.Id, userExists.Email, userExists.Password, userExists.Name, userExists.Address, userExists.Phone, userExists.Status, userExists.Role));
+        return Result.Success(new UserResponse(userExists.Id, userExists.Email, userExists.UserName, userExists.Password, userExists.Name, userExists.Address, userExists.Phone, userExists.Status, userExists.Role));
     }
 }

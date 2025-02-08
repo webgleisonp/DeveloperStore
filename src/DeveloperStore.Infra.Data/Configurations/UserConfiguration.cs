@@ -20,9 +20,13 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(100);
 
+        builder.Property<string>(u => u.UserName)
+            .IsRequired()
+            .HasMaxLength(20);
+
         builder.Property(u => u.Password)
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(12);
 
         builder.ComplexProperty(u => u.Name, name =>
         {
