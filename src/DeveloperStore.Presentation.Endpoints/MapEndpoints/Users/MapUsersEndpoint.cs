@@ -14,9 +14,9 @@ internal sealed class MapUsersEndpoint : IEndpointMap
     public void MapEndpoints(IEndpointRouteBuilder app)
     {
         app.MapGet("users", GetUsersAsync)
-            .Produces<Result<IEnumerable<UserResponse>>>()
+            .Produces<PaginatedResult<IEnumerable<UserResponse>>>()
             .Produces(404)
-            .Produces<Result<IEnumerable<UserResponse>>>(StatusCodes.Status400BadRequest)
+            .Produces<PaginatedResult<IEnumerable<UserResponse>>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
             .WithTags("Users")
             .MapToApiVersion(1);
@@ -62,19 +62,13 @@ internal sealed class MapUsersEndpoint : IEndpointMap
         var query = new GetUsersQuery(page, pageSize, order);
         var result = await sender.Send(query, cancellationToken);
 
-        if (result.IsFailure && result.Errors.Any())
-        {
-            if (result.Errors.Any(p => p.Code == "404"))
-                return Results.NotFound(result);
+        if (result.IsFailure && result.Error.Code == "404")
+            return Results.NotFound(result);
 
-            var problemDetails = ProblemDetailsFactory.CreateValidationProblemDetails(
-                result.Errors,
-                "/users");
+        if (result.IsSuccess)
+            return Results.Ok(result);
 
-            return Results.BadRequest(problemDetails);
-        }
-
-        return Results.Ok(result);
+        return Results.BadRequest(result);
     }
 
     public async Task<IResult> GetUserByIdAsync(ISender sender,
@@ -84,19 +78,13 @@ internal sealed class MapUsersEndpoint : IEndpointMap
         var query = new GetUserByIdQuery(id);
         var result = await sender.Send(query, cancellationToken);
 
-        if (result.IsFailure && result.Errors.Any())
-        {
-            if (result.Errors.Any(p => p.Code == "404"))
-                return Results.NotFound(result);
+        if (result.IsFailure && result.Error.Code == "404")
+            return Results.NotFound(result);
 
-            var problemDetails = ProblemDetailsFactory.CreateValidationProblemDetails(
-                result.Errors,
-                "/users");
+        if (result.IsSuccess)
+            return Results.Ok(result);
 
-            return Results.BadRequest(problemDetails);
-        }
-
-        return Results.Ok(result);
+        return Results.BadRequest(result);
     }
 
     public async Task<IResult> CreateUserAsync(ISender sender,
@@ -115,16 +103,10 @@ internal sealed class MapUsersEndpoint : IEndpointMap
 
         var result = await sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            var problemDetails = ProblemDetailsFactory.CreateValidationProblemDetails(
-                result.Errors,
-                "/users");
+        if (result.IsSuccess)
+            return Results.Created("/products", result);
 
-            return Results.BadRequest(problemDetails);
-        }
-
-        return Results.Created($"/users/{result.Value.Id}", result.Value);
+        return Results.BadRequest(result);
     }
 
     public async Task<IResult> UpdateUserAsync(ISender sender,
@@ -135,19 +117,13 @@ internal sealed class MapUsersEndpoint : IEndpointMap
         var command = new UpdateUserCommand(id, request.Email, request.UserName, request.Password, request.Name, request.Address, request.Phone, request.Status, request.Role);
         var result = await sender.Send(command, cancellationToken);
 
-        if (result.IsFailure && result.Errors.Any())
-        {
-            if (result.Errors.Any(p => p.Code == "404"))
-                return Results.NotFound(result);
+        if (result.IsFailure && result.Error.Code == "404")
+            return Results.NotFound(result);
 
-            var problemDetails = ProblemDetailsFactory.CreateValidationProblemDetails(
-                result.Errors,
-                "/users");
+        if (result.IsSuccess)
+            return Results.Ok(result);
 
-            return Results.BadRequest(problemDetails);
-        }
-
-        return Results.Ok(result);
+        return Results.BadRequest(result);
     }
 
     public async Task<IResult> DeleteUserAsync(ISender sender,
@@ -157,18 +133,12 @@ internal sealed class MapUsersEndpoint : IEndpointMap
         var command = new DeleteUserCommand(id);
         var result = await sender.Send(command, cancellationToken);
 
-        if (result.IsFailure && result.Errors.Any())
-        {
-            if (result.Errors.Any(p => p.Code == "404"))
-                return Results.NotFound(result);
+        if (result.IsFailure && result.Error.Code == "404")
+            return Results.NotFound(result);
 
-            var problemDetails = ProblemDetailsFactory.CreateValidationProblemDetails(
-                result.Errors,
-                "/users");
+        if (result.IsSuccess)
+            return Results.Ok(result);
 
-            return Results.BadRequest(problemDetails);
-        }
-
-        return Results.Ok(result);
+        return Results.BadRequest(result);
     }
 }

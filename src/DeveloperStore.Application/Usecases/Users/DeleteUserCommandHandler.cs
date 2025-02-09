@@ -6,25 +6,16 @@ using MediatR;
 
 namespace DeveloperStore.Application.Usecases.Users;
 
-internal sealed class UpdateUserCommandHandler(IUserRepository userRepository, IUnityOfWork unityOfWork) : IRequestHandler<UpdateUserCommand, Result<UserResponse>>
+internal sealed class DeleteUserCommandHandler(IUserRepository userRepository, IUnityOfWork unityOfWork) : IRequestHandler<DeleteUserCommand, Result<UserResponse>>
 {
-    public async Task<Result<UserResponse>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<UserResponse>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
         var userExists = await userRepository.GetUserByIdAsync(request.Id, cancellationToken);
 
         if (userExists is null)
             return Result.Failure<UserResponse>(DomainErrors.User.UserNotFound);
 
-        userExists.Email = request.Email;
-        userExists.UserName = request.UserName;
-        userExists.Password = request.Password;
-        userExists.Name = request.Name;
-        userExists.Address = request.Address;
-        userExists.Phone = request.Phone;
-        userExists.Status = request.Status;
-        userExists.Role = request.Role;
-
-        await userRepository.UpdateUserAsync(userExists, cancellationToken);
+        await userRepository.DeleteUserAsync(userExists, cancellationToken);
 
         await unityOfWork.SaveChangesAsync(cancellationToken);
 

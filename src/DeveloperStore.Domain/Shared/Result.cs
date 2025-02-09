@@ -1,62 +1,55 @@
-﻿namespace DeveloperStore.Domain.Shared;
+﻿using DeveloperStore.Domain.Abstractions;
 
-public class Result
+namespace DeveloperStore.Domain.Shared;
+
+public class Result : IBaseResult
 {
-    private static readonly Error DefaultError = new(
-        "DefaultError",
-        "An error occurred while processing the request");
-
-    protected internal Result() { }
-
-    public static Result<TValue> Success<TValue>(TValue value) => Result<TValue>.Success(value);
-
-    public static Result<TValue> Failure<TValue>(params Error[] errors) => Result<TValue>.Failure(errors);
-
-    // Sobrecarga para falha sem erros específicos
-    public static Result<TValue> Failure<TValue>() => Result<TValue>.Failure(DefaultError);
-}
-
-public class Result<TValue>
-{
-    private readonly TValue? _value;
-    private readonly Error[] _errors;
-
-    private static readonly Error DefaultError = new(
-        "DefaultError",
-        "An error occurred while processing the request");
-
-    protected internal Result(TValue? value, bool isSuccess, Error[] errors)
+    protected internal Result(bool isSuccess, Error error)
     {
-        _value = value;
-        IsSuccess = isSuccess;
-        _errors = errors.Length == 0 && !isSuccess 
-            ? new[] { DefaultError } 
-            : errors;
-    }
+        if (isSuccess && error != Error.None)
+            throw new InvalidOperationException();
 
-    public TValue? Value => IsSuccess 
-        ? _value 
-        : default;
+        if (!isSuccess && error == Error.None)
+            throw new InvalidOperationException();
+
+        IsSuccess = isSuccess;
+        Error = error;
+    }
 
     public bool IsSuccess { get; }
     public bool IsFailure => !IsSuccess;
-    public Error[] Errors => _errors;
+    public Error Error { get; }
 
-    public static Result<TValue> Success(TValue value) => new(value, true, Array.Empty<Error>());
+    public static Result Success() => new(true, Error.None);
+    public static Result<TValue> Success<TValue>(TValue value) => new(value, true, Error.None);
+    public static Result<TValue?> Create<TValue>(TValue? value) => Success(value);
+    public static Result Failure(Error error) => new(false, error);
+    public static Result<TValue> Failure<TValue>(Error error) => new Result<TValue>(default!, false, error);
+    public static Result FirstFailureOrSuccess(params Result[] results)
+    {
+        foreach (var result in results)
+            if (result.IsFailure)
+                return result;
 
-    public static Result<TValue> Failure(params Error[] errors) => new(default, false, errors);
-
-    // Sobrecarga para falha sem erros específicos
-    public static Result<TValue> Failure() => new(default, false, new[] { DefaultError });
+        return Success();
+    }
 }
 
-public record Error(string Code, string Message)
+public class Result<TValue> : Result, IBaseResult
 {
-    public static Error Default() => new(
-        "DefaultError",
-        "An error occurred while processing the request");
+    private readonly TValue? _value;
 
-    public static Error Validation(string code, string message) => new(code, message);
+    protected internal Result(TValue? value, bool isSuccess, Error error)
+        : base(isSuccess, error) => _value = value;
 
+    public TValue Value => IsSuccess
+        ? _value!
+        : default!;
+
+    public static implicit operator Result<TValue?>(TValue value) => Create(value);
+}
+
+public sealed record Error(string Code, string Message)
+{
     public static readonly Error None = new(string.Empty, string.Empty);
 }

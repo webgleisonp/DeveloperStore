@@ -12,19 +12,6 @@ public sealed class CreateUserCommandHandler(IValidator<CreateUserCommand> valid
 {
     public async Task<Result<UserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var validationResult = validator.Validate(request);
-
-        if (!validationResult.IsValid)
-        {
-            var errors = validationResult.Errors
-                .Select(error => new Error(
-                    error.PropertyName,
-                    error.ErrorMessage))
-                .ToArray();
-
-            return Result.Failure<UserResponse>(errors);
-        }
-
         var userExists = await userRepository.GetUserByEmailAsync(request.Email, cancellationToken);
 
         if (userExists is not null)

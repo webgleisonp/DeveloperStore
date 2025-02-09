@@ -30,15 +30,12 @@ internal sealed class MapAuthEndpoint : IEndpointMap
 
         var result = await sender.Send(command, cancellationToken);
 
-        if (result.IsFailure)
-        {
-            var problemDetails = ProblemDetailsFactory.CreateValidationProblemDetails(
-                result.Errors,
-                "/auth");
+        if (result.IsFailure && result.Error.Code == "404")
+            return Results.NotFound(result);
 
-            return Results.BadRequest(problemDetails);
-        }
+        if (result.IsSuccess)
+            return Results.Ok(result);
 
-        return Results.Ok(result.Value);
+        return Results.BadRequest(result);
     }
 }

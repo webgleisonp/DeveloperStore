@@ -15,6 +15,15 @@ public static class DomainErrors
         public static Error InvalidCredentials => new("400", "Invalid credentials");
     }
 
+    public static class Product
+    {
+        public static Error ProductsTableIsEmpty => new("404", "Products table is empty");
+
+        public static Error ProductNotFound => new("404", "Product not found");
+
+        public static Error ProductExists => new("400", "Product exists");
+    }
+
     public static class Pagination
     {
         public static Error InvalidPage => new(

@@ -1,4 +1,5 @@
-﻿using DeveloperStore.Domain.Abstractions.Repositories;
+﻿using DeveloperStore.Application.Abstractions;
+using DeveloperStore.Domain.Abstractions.Repositories;
 using DeveloperStore.Domain.Entities;
 using DeveloperStore.Domain.Errors;
 using DeveloperStore.Domain.Shared;
@@ -6,22 +7,22 @@ using MediatR;
 
 namespace DeveloperStore.Application.Usecases.Users;
 
-internal sealed class GetUsersQueryHandler(IUserRepository userRepository) : IRequestHandler<GetUsersQuery, PagedResult<UserResponse>>
+internal sealed class GetUsersQueryHandler(IUserRepository userRepository) : IRequestHandler<GetUsersQuery, PaginatedResult<IEnumerable<UserResponse>>>, IPagedResultHandler<User>
 {
-    public async Task<PagedResult<UserResponse>> Handle(
+    public async Task<PaginatedResult<IEnumerable<UserResponse>>> Handle(
         GetUsersQuery request,
         CancellationToken cancellationToken)
     {
         var users = await userRepository.GetUsersAsync(cancellationToken);
 
         if (users is null || !users.Any())
-            return PagedResult<UserResponse>.Failure(DomainErrors.User.UsersTableIsEmpty);
+            return PaginatedResult.Failure<IEnumerable<UserResponse>>(DomainErrors.User.UsersTableIsEmpty);
 
         if (!string.IsNullOrWhiteSpace(request.Order))
         {
             var orderParts = request.Order.Split(',');
 
-            IOrderedEnumerable<User>? orderedUsers = null;
+            IOrderedEnumerable<User>? orderedResult = null;
 
             foreach (var part in orderParts)
             {
@@ -32,21 +33,21 @@ internal sealed class GetUsersQueryHandler(IUserRepository userRepository) : IRe
                     .Replace(" desc", "", StringComparison.OrdinalIgnoreCase)
                     .Trim();
 
-                if (orderedUsers == null)
+                if (orderedResult == null)
                 {
-                    orderedUsers = isDescending
+                    orderedResult = isDescending
                         ? users.OrderByDescending(u => GetPropertyValue(u, propertyName))
                         : users.OrderBy(u => GetPropertyValue(u, propertyName));
                 }
                 else
                 {
-                    orderedUsers = isDescending
-                        ? orderedUsers.ThenByDescending(u => GetPropertyValue(u, propertyName))
-                        : orderedUsers.ThenBy(u => GetPropertyValue(u, propertyName));
+                    orderedResult = isDescending
+                        ? orderedResult.ThenByDescending(u => GetPropertyValue(u, propertyName))
+                        : orderedResult.ThenBy(u => GetPropertyValue(u, propertyName));
                 }
             }
 
-            users = (orderedUsers is not null || orderedUsers.Count() == 0) ? orderedUsers.AsEnumerable() : users;
+            users = (orderedResult is not null || orderedResult.Count() == 0) ? orderedResult.AsEnumerable() : users;
         }
 
         var totalItems = users.Count();
@@ -57,14 +58,13 @@ internal sealed class GetUsersQueryHandler(IUserRepository userRepository) : IRe
         if (request.Page.HasValue && request.PageSize.HasValue)
         {
             if (currentPage <= 0)
-                return PagedResult<UserResponse>.Failure(DomainErrors.Pagination.InvalidPage);
+                return PaginatedResult.Failure<IEnumerable<UserResponse>>(DomainErrors.Pagination.InvalidPage);
 
             if (pageSize <= 0)
-                return PagedResult<UserResponse>.Failure(DomainErrors.Pagination.InvalidPageSize);
+                return PaginatedResult.Failure<IEnumerable<UserResponse>>(DomainErrors.Pagination.InvalidPageSize);
 
             if (currentPage > totalPages)
-                return PagedResult<UserResponse>.Failure(
-                    DomainErrors.Pagination.PageExceedsLimit(currentPage, totalPages));
+                return PaginatedResult.Failure<IEnumerable<UserResponse>>(DomainErrors.Pagination.PageExceedsLimit(currentPage, totalPages));
 
             users = users
                 .Skip((currentPage - 1) * pageSize)
@@ -83,24 +83,20 @@ internal sealed class GetUsersQueryHandler(IUserRepository userRepository) : IRe
             user.Role
         ));
 
-        return PagedResult<UserResponse>.Success(
-            response,
-            totalItems,
-            currentPage,
-            totalPages);
+        return PaginatedResult.Success(response, totalItems, currentPage, pageSize);
     }
 
-    private static object? GetPropertyValue(User user, string propertyName)
+    public object? GetPropertyValue(User value, string propertyName)
     {
         return propertyName.ToLower() switch
         {
-            "email" => user.Email,
-            "password" => user.Password,
-            "name" => user.Name.FirstName,
-            "address" => user.Address.Street,
-            "phone" => user.Phone,
-            "status" => user.Status,
-            "role" => user.Role,
+            "email" => value.Email,
+            "password" => value.Password,
+            "name" => value.Name.FirstName,
+            "address" => value.Address.Street,
+            "phone" => value.Phone,
+            "status" => value.Status,
+            "role" => value.Role,
             _ => null
         };
     }
