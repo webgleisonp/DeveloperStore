@@ -18,6 +18,7 @@ internal sealed class MapCartsEndpoint : IEndpointMap
             .Produces(404)
             .Produces<PaginatedResult<IEnumerable<CartsResponse>>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization()
             .WithTags("Carts")
             .MapToApiVersion(1);
 
@@ -26,6 +27,7 @@ internal sealed class MapCartsEndpoint : IEndpointMap
             .Produces(404)
             .Produces<PaginatedResult<IEnumerable<CartsResponse>>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization()
             .WithTags("Carts")
             .MapToApiVersion(1);
 
@@ -33,6 +35,7 @@ internal sealed class MapCartsEndpoint : IEndpointMap
             .Produces<Result<IEnumerable<CartsResponse>>>(StatusCodes.Status201Created)
             .Produces<Result<IEnumerable<CartsResponse>>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization()
             .WithTags("Carts")
             .MapToApiVersion(1);
 
@@ -41,6 +44,7 @@ internal sealed class MapCartsEndpoint : IEndpointMap
             .Produces(404)
             .Produces<PaginatedResult<IEnumerable<CartsResponse>>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization()
             .WithTags("Carts")
             .MapToApiVersion(1);
 
@@ -49,6 +53,7 @@ internal sealed class MapCartsEndpoint : IEndpointMap
             .Produces(404)
             .Produces<PaginatedResult<IEnumerable<CartsResponse>>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization()
             .WithTags("Carts")
             .MapToApiVersion(1);
 
@@ -57,6 +62,7 @@ internal sealed class MapCartsEndpoint : IEndpointMap
             .Produces(404)
             .Produces<PaginatedResult<IEnumerable<CartsResponse>>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization()
             .WithTags("Carts")
             .MapToApiVersion(1);
     }

@@ -33,6 +33,7 @@ internal sealed class MapProductsEndpoint : IEndpointMap
             .Produces<Result<ProductResponse>>(StatusCodes.Status201Created)
             .Produces<Result<ProductResponse>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization()
             .WithTags("Products")
             .MapToApiVersion(1);
 
@@ -41,6 +42,7 @@ internal sealed class MapProductsEndpoint : IEndpointMap
             .Produces(404)
             .Produces<Result<ProductResponse>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization()
             .WithTags("Products")
             .MapToApiVersion(1);
 
@@ -49,6 +51,7 @@ internal sealed class MapProductsEndpoint : IEndpointMap
             .Produces(404)
             .Produces<Result<ProductResponse>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization()
             .WithTags("Products")
             .MapToApiVersion(1);
 

@@ -18,6 +18,7 @@ internal sealed class MapUsersEndpoint : IEndpointMap
             .Produces(404)
             .Produces<PaginatedResult<IEnumerable<UserResponse>>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization()
             .WithTags("Users")
             .MapToApiVersion(1);
 
@@ -26,6 +27,7 @@ internal sealed class MapUsersEndpoint : IEndpointMap
             .Produces(404)
             .Produces<Result<UserResponse>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization()
             .WithTags("Users")
             .MapToApiVersion(1);
 
@@ -41,6 +43,7 @@ internal sealed class MapUsersEndpoint : IEndpointMap
             .Produces(404)
             .Produces<Result<UserResponse>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization()
             .WithTags("Users")
             .MapToApiVersion(1);
 
@@ -49,6 +52,7 @@ internal sealed class MapUsersEndpoint : IEndpointMap
             .Produces(404)
             .Produces<Result<UserResponse>>(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization()
             .WithTags("Users")
             .MapToApiVersion(1);
     }
