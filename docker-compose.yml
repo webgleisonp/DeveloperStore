@@ -1,6 +1,24 @@
 version: '3.8'
 
 services:
+  api:
+    container_name: developerstore-api
+    build:
+      context: .
+      dockerfile: src/DeveloperStore.Presentation.Api/Dockerfile
+    ports:
+      - "5000:80"
+      - "5001:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=developerstore;Username=postgres;Password=postgres
+    depends_on:
+      - postgres
+    networks:
+      - developerstore-network
+    restart: always
+
   postgres:
     container_name: developerstore-db
     image: postgres:latest
