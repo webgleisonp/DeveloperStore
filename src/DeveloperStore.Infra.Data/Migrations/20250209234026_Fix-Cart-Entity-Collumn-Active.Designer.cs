@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DeveloperStore.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DeveloperStore.Infra.Data.Migrations
 {
     [DbContext(typeof(DeveloperStoreDbContext))]
-    partial class DeveloperStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250209234026_Fix-Cart-Entity-Collumn-Active")]
+    partial class FixCartEntityCollumnActive
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

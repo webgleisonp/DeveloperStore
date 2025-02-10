@@ -3,7 +3,7 @@ using DeveloperStore.Domain.ValueObjects;
 
 namespace DeveloperStore.Domain.Entities;
 
-public sealed class User
+public class User
 {
     public int Id { get; set; }
     public string Email { get; set; }
@@ -14,4 +14,6 @@ public sealed class User
     public string Phone { get; set; }
     public Status Status { get; set; }
     public Role Role { get; set; }
+
+    public virtual ICollection<Cart> Carts { get; set; }
 }

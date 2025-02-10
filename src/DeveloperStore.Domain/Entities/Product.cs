@@ -2,7 +2,7 @@
 
 namespace DeveloperStore.Domain.Entities;
 
-public sealed class Product
+public class Product
 {
     public int Id { get; set; }
     public string Title { get; set; }
@@ -11,4 +11,6 @@ public sealed class Product
     public string Category { get; set; }
     public string Image { get; set; }
     public Rating Rating { get; set; }
+
+    public virtual ICollection<CartItem> CartItems { get; set; }
 }

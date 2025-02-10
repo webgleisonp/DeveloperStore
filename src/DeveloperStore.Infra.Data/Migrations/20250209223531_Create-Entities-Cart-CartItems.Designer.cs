@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DeveloperStore.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DeveloperStore.Infra.Data.Migrations
 {
     [DbContext(typeof(DeveloperStoreDbContext))]
-    partial class DeveloperStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250209223531_Create-Entities-Cart-CartItems")]
+    partial class CreateEntitiesCartCartItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,9 +34,6 @@ namespace DeveloperStore.Infra.Data.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp with time zone");

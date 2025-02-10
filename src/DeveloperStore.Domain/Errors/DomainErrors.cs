@@ -15,6 +15,24 @@ public static class DomainErrors
         public static Error InvalidCredentials => new("400", "Invalid credentials");
     }
 
+    public static class Cart
+    {
+        public static Error CartsTableIsEmpty => new("404", "Carts table is empty");
+
+        public static Error CartNotFound => new("404", "Cart not found");
+
+        public static Error CartExists => new("400", "There is already an active cart for this user");
+    }
+
+    public static class CartItem
+    {
+        public static Error CartItemsTableIsEmpty => new("404", "Cart Items table is empty");
+
+        public static Error CartItemNotFound => new("404", "Cart item not found");
+
+        public static Error CartItemExists => new("400", "Cart item is already included");
+    }
+
     public static class Product
     {
         public static Error ProductsTableIsEmpty => new("404", "Products table is empty");
