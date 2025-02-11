@@ -1,6 +1,6 @@
 # DeveloperStore API
 
-API REST desenvolvida em .NET 8 para gerenciamento de uma loja de desenvolvedores.
+API REST desenvolvida em .NET 8 para gerenciamento de uma loja virtual.
 
 ## 🚀 Tecnologias
 
