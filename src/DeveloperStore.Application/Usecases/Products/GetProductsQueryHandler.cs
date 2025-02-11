@@ -9,19 +9,6 @@ namespace DeveloperStore.Application.Usecases.Products;
 
 internal sealed class GetProductsQueryHandler(IProductRepository productRepository) : IRequestHandler<GetProductsQuery, PaginatedResult<IEnumerable<ProductResponse>>>, IPagedResultHandler<Product>
 {
-    public object? GetPropertyValue(Product value, string propertyName)
-    {
-        return propertyName.ToLower() switch
-        {
-            "title" => value.Title,
-            "price" => value.Price,
-            "category" => value.Category,
-            "image" => value.Image,
-            "rate" => value.Rating.Rate,
-            _ => null
-        };
-    }
-
     public async Task<PaginatedResult<IEnumerable<ProductResponse>>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
     {
         var products = await productRepository.GetProductsAsync(cancellationToken);
@@ -83,5 +70,18 @@ internal sealed class GetProductsQueryHandler(IProductRepository productReposito
         var response = products.Select(p => new ProductResponse(p.Id, p.Title, p.Price, p.Description, p.Category, p.Image, p.Rating));
 
         return PaginatedResult.Success(response, totalItems, currentPage, totalPages);
+    }
+
+    public object? GetPropertyValue(Product value, string propertyName)
+    {
+        return propertyName.ToLower() switch
+        {
+            "title" => value.Title,
+            "price" => value.Price,
+            "category" => value.Category,
+            "image" => value.Image,
+            "rate" => value.Rating.Rate,
+            _ => null
+        };
     }
 }

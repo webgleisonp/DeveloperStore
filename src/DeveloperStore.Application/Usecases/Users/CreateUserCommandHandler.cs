@@ -3,12 +3,11 @@ using DeveloperStore.Domain.Abstractions.Repositories;
 using DeveloperStore.Domain.Entities;
 using DeveloperStore.Domain.Errors;
 using DeveloperStore.Domain.Shared;
-using FluentValidation;
 using MediatR;
 
 namespace DeveloperStore.Application.Usecases.Users;
 
-public sealed class CreateUserCommandHandler(IValidator<CreateUserCommand> validator, IUserRepository userRepository, IUnityOfWork unitOfWork) : IRequestHandler<CreateUserCommand, Result<UserResponse>>
+internal sealed class CreateUserCommandHandler(IUserRepository userRepository, IUnityOfWork unitOfWork) : IRequestHandler<CreateUserCommand, Result<UserResponse>>
 {
     public async Task<Result<UserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
