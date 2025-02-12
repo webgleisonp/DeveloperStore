@@ -33,7 +33,7 @@ public class CreateProductCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldCreateProduct_WhenProductDoesNotExist()
+    public async Task CreateProductCommandHandler_ShouldCreateProduct_WhenProductDoesNotExist()
     {
         // Arrange
         var command = new CreateProductCommand("New Product",
@@ -64,7 +64,7 @@ public class CreateProductCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenProductAlreadyExists()
+    public async Task CreateProductCommandHandler_ShouldReturnFailure_WhenProductAlreadyExists()
     {
         // Arrange
         var existingProduct = _faker.Generate();
@@ -85,7 +85,7 @@ public class CreateProductCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldThrowException_WhenRepositoryFails()
+    public async Task CreateProductCommandHandler_ShouldThrowException_WhenRepositoryFails()
     {
         // Arrange
         var command = new CreateProductCommand("test", 100, "test", "test", "teste.jpg", new Rating(1, 1));

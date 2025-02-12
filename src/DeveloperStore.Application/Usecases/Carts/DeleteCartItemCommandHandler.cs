@@ -1,5 +1,6 @@
 ﻿using DeveloperStore.Application.Abstractions;
 using DeveloperStore.Domain.Abstractions.Repositories;
+using DeveloperStore.Domain.Errors;
 using DeveloperStore.Domain.Shared;
 using MediatR;
 
@@ -10,6 +11,9 @@ internal sealed class DeleteCartItemCommandHandler(ICartItemsRepository cartItem
     public async Task<Result> Handle(DeleteCartItemCommand request, CancellationToken cancellationToken)
     {
         var cartItem = await cartItemsRepository.GetItemByIdAsync(request.CartItemId, cancellationToken);
+
+        if (cartItem is null)
+            return Result.Failure(DomainErrors.CartItem.CartItemNotFound);
 
         await cartItemsRepository.DeleteCartItemAsync(cartItem, cancellationToken);
 

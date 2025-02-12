@@ -6,7 +6,6 @@ using DeveloperStore.Domain.Entities;
 using DeveloperStore.Domain.Errors;
 using DeveloperStore.Domain.ValueObjects;
 using NSubstitute;
-using NSubstitute.ExceptionExtensions;
 
 namespace DeveloperStore.Application.Tests.UseCases.Products;
 
@@ -34,7 +33,7 @@ public class UpdateProductCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnSuccess_WhenProductIsFoundAndUpdated()
+    public async Task UpdateProductCommandHandler_ShouldReturnSuccess_WhenProductIsFoundAndUpdated()
     {
         // Arrange
         var product = _faker.Generate();
@@ -65,7 +64,7 @@ public class UpdateProductCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenProductIsNotFound()
+    public async Task UpdateProductCommandHandler_ShouldReturnFailure_WhenProductIsNotFound()
     {
         // Arrange
         var command = new UpdateProductCommand(
@@ -90,7 +89,7 @@ public class UpdateProductCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldUpdateProductFieldsCorrectly()
+    public async Task UpdateProductCommandHandler_ShouldUpdateProductFieldsCorrectly()
     {
         // Arrange
         var product = _faker.Generate();
@@ -120,7 +119,7 @@ public class UpdateProductCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenRepositoryFails()
+    public async Task UpdateProductCommandHandler_ShouldReturnFailure_WhenRepositoryFails()
     {
         // Arrange
         var product = _faker.Generate();

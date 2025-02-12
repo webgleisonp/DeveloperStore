@@ -30,7 +30,7 @@ public class GetProductsByCategoryQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnProducts_WhenCategoryExists()
+    public async Task GetProductsByCategoryQueryHandler_ShouldReturnProducts_WhenCategoryExists()
     {
         // Arrange
         var category = "Electronics";
@@ -52,7 +52,7 @@ public class GetProductsByCategoryQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenNoProductsFound()
+    public async Task GetProductsByCategoryQueryHandler_ShouldReturnFailure_WhenNoProductsFound()
     {
         // Arrange
         var category = "NonExistentCategory";
@@ -72,7 +72,7 @@ public class GetProductsByCategoryQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenRepositoryReturnsNull()
+    public async Task GetProductsByCategoryQueryHandler_ShouldReturnFailure_WhenRepositoryReturnsNull()
     {
         // Arrange
         var category = "SomeCategory";
@@ -92,7 +92,7 @@ public class GetProductsByCategoryQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldThrowException_WhenRepositoryFails()
+    public async Task GetProductsByCategoryQueryHandler_ShouldThrowException_WhenRepositoryFails()
     {
         // Arrange
         var category = "SomeCategory";

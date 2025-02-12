@@ -23,7 +23,7 @@ public class GetUserByIdQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnUser_WhenUserExists()
+    public async Task GetUserByIdQueryHandler_ShouldReturnUser_WhenUserExists()
     {
         // Arrange
         var user = new User
@@ -65,7 +65,7 @@ public class GetUserByIdQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenUserDoesNotExist()
+    public async Task GetUserByIdQueryHandler_ShouldReturnFailure_WhenUserDoesNotExist()
     {
         // Arrange
         var query = new GetUserByIdQuery(1);
@@ -82,7 +82,7 @@ public class GetUserByIdQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldThrowException_WhenRepositoryFails()
+    public async Task GetUserByIdQueryHandler_ShouldThrowException_WhenRepositoryFails()
     {
         // Arrange
         var query = new GetUserByIdQuery(1);

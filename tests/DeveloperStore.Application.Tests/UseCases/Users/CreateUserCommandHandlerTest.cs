@@ -26,7 +26,7 @@ public class CreateUserCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldCreateUser_WhenEmailDoesNotExist()
+    public async Task CreateUserCommandHandler_ShouldCreateUser_WhenEmailDoesNotExist()
     {
         // Arrange
         var command = new CreateUserCommand(
@@ -64,7 +64,7 @@ public class CreateUserCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenEmailAlreadyExists()
+    public async Task CreateUserCommandHandler_ShouldReturnFailure_WhenEmailAlreadyExists()
     {
         // Arrange
         var existingUser = new User { Email = _faker.Internet.Email() };
@@ -102,7 +102,7 @@ public class CreateUserCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldThrowException_WhenRepositoryFails()
+    public async Task CreateUserCommandHandler_ShouldThrowException_WhenRepositoryFails()
     {
         // Arrange
         var command = new CreateUserCommand(

@@ -33,7 +33,7 @@ public class GetUsersQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnPaginatedUsers_WhenUsersExist()
+    public async Task GetUsersQueryHandler_ShouldReturnPaginatedUsers_WhenUsersExist()
     {
         // Arrange
         var users = _faker.Generate(10);
@@ -52,7 +52,7 @@ public class GetUsersQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenNoUsersExist()
+    public async Task GetUsersQueryHandler_ShouldReturnFailure_WhenNoUsersExist()
     {
         // Arrange
         _userRepository.GetUsersAsync(Arg.Any<CancellationToken>())
@@ -69,7 +69,7 @@ public class GetUsersQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenPageIsZero()
+    public async Task GetUsersQueryHandler_ShouldReturnFailure_WhenPageIsZero()
     {
         // Arrange
         var users = _faker.Generate(10);
@@ -87,7 +87,7 @@ public class GetUsersQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenPageSizeIsZero()
+    public async Task GetUsersQueryHandler_ShouldReturnFailure_WhenPageSizeIsZero()
     {
         // Arrange
         var users = _faker.Generate(10);
@@ -105,7 +105,7 @@ public class GetUsersQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenPageExceedsTotalPages()
+    public async Task GetUsersQueryHandler_ShouldReturnFailure_WhenPageExceedsTotalPages()
     {
         // Arrange
         var users = _faker.Generate(3);
@@ -123,7 +123,7 @@ public class GetUsersQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnOrderedUsers_WhenOrderIsProvided()
+    public async Task GetUsersQueryHandler_ShouldReturnOrderedUsers_WhenOrderIsProvided()
     {
         // Arrange
         var users = _faker.Generate(5).OrderBy(u => u.Name.FirstName).ToList();
@@ -141,7 +141,7 @@ public class GetUsersQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldThrowException_WhenRepositoryFails()
+    public async Task GetUsersQueryHandler_ShouldThrowException_WhenRepositoryFails()
     {
         // Arrange
         _userRepository.GetUsersAsync(Arg.Any<CancellationToken>())

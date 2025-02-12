@@ -26,7 +26,7 @@ public class DeleteUserCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldDeleteUser_WhenUserExists()
+    public async Task DeleteUserCommandHandler_ShouldDeleteUser_WhenUserExists()
     {
         // Arrange
         var user = new User
@@ -69,7 +69,7 @@ public class DeleteUserCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenUserDoesNotExist()
+    public async Task DeleteUserCommandHandler_ShouldReturnFailure_WhenUserDoesNotExist()
     {
         // Arrange
         var command = new DeleteUserCommand(1);
@@ -88,7 +88,7 @@ public class DeleteUserCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldThrowException_WhenRepositoryFails()
+    public async Task DeleteUserCommandHandler_ShouldThrowException_WhenRepositoryFails()
     {
         // Arrange
         var user = new User

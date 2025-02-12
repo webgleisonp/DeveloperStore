@@ -36,7 +36,7 @@ public class UpdateUserCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldUpdateUser_WhenUserExists()
+    public async Task UpdateUserCommandHandler_ShouldUpdateUser_WhenUserExists()
     {
         // Arrange
         var existingUser = _faker.Generate();
@@ -73,7 +73,7 @@ public class UpdateUserCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenUserNotFound()
+    public async Task UpdateUserCommandHandler_ShouldReturnFailure_WhenUserNotFound()
     {
         // Arrange
         var command = new UpdateUserCommand(1,
@@ -102,7 +102,7 @@ public class UpdateUserCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldThrowException_WhenRepositoryFails()
+    public async Task UpdateUserCommandHandler_ShouldThrowException_WhenRepositoryFails()
     {
         // Arrange
         var command = new UpdateUserCommand(1,

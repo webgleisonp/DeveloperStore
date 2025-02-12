@@ -30,7 +30,7 @@ public class GetProductsCategoriesQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnCategories_WhenProductsExist()
+    public async Task GetProductsCategoriesQueryHandler_ShouldReturnCategories_WhenProductsExist()
     {
         // Arrange
         var products = _faker.Generate(5);
@@ -52,7 +52,7 @@ public class GetProductsCategoriesQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenNoProductsExist()
+    public async Task GetProductsCategoriesQueryHandler_ShouldReturnFailure_WhenNoProductsExist()
     {
         // Arrange
         var query = new GetProductsCategoriesQuery();
@@ -71,7 +71,7 @@ public class GetProductsCategoriesQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenRepositoryReturnsNull()
+    public async Task GetProductsCategoriesQueryHandler_ShouldReturnFailure_WhenRepositoryReturnsNull()
     {
         // Arrange
         var query = new GetProductsCategoriesQuery();
@@ -90,7 +90,7 @@ public class GetProductsCategoriesQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldThrowException_WhenRepositoryFails()
+    public async Task GetProductsCategoriesQueryHandler_ShouldThrowException_WhenRepositoryFails()
     {
         // Arrange
         var query = new GetProductsCategoriesQuery();

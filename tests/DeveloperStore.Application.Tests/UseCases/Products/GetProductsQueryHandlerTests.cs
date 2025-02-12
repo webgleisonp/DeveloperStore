@@ -30,7 +30,7 @@ public class GetProductsQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnSuccess_WhenProductsExist()
+    public async Task GetProductsQueryHandler_ShouldReturnSuccess_WhenProductsExist()
     {
         // Arrange
         var products = _faker.Generate(5);
@@ -49,7 +49,7 @@ public class GetProductsQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenNoProductsExist()
+    public async Task GetProductsQueryHandler_ShouldReturnFailure_WhenNoProductsExist()
     {
         // Arrange
         var query = new GetProductsQuery();
@@ -66,7 +66,7 @@ public class GetProductsQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenRepositoryReturnsNull()
+    public async Task GetProductsQueryHandler_ShouldReturnFailure_WhenRepositoryReturnsNull()
     {
         // Arrange
         var query = new GetProductsQuery();
@@ -83,7 +83,7 @@ public class GetProductsQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldOrderProductsByPriceAsc()
+    public async Task GetProductsQueryHandler_ShouldOrderProductsByPriceAsc()
     {
         // Arrange
         var products = _faker.Generate(5);
@@ -101,7 +101,7 @@ public class GetProductsQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldOrderProductsByPriceDesc()
+    public async Task GetProductsQueryHandler_ShouldOrderProductsByPriceDesc()
     {
         // Arrange
         var products = _faker.Generate(5);
@@ -119,7 +119,7 @@ public class GetProductsQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenPageSizeIsZero()
+    public async Task GetProductsQueryHandler_ShouldReturnFailure_WhenPageSizeIsZero()
     {
         // Arrange
         var products = _faker.Generate(5);
@@ -137,7 +137,7 @@ public class GetProductsQueryHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenPageExceedsLimit()
+    public async Task GetProductsQueryHandler_ShouldReturnFailure_WhenPageExceedsLimit()
     {
         // Arrange
         var products = _faker.Generate(5);

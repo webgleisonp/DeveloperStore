@@ -29,12 +29,13 @@ internal sealed class CreateCartCommandHandler(ICartsRepository cartsRepository,
             {
                 Cart = newCart,
                 ProductId = cartItem.ProductId,
-                Quantity = cartItem.Quantity
+                Quantity = cartItem.Quantity,
+                Price = cartItem.ItemPrice
             };
 
-            newCartItem.SetPrice(cartItem.ItemPrice);
-
             await cartItemsRepository.CreateCartItemAsync(newCartItem, cancellationToken);
+
+            newCart.CartItems.Add(newCartItem);
         }
 
         await unityOfWork.SaveChangesAsync(cancellationToken);

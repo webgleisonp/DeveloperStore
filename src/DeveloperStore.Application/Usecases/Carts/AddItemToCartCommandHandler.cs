@@ -20,10 +20,9 @@ internal sealed class AddItemToCartCommandHandler(ICartsRepository cartRepositor
         {
             CartId = request.CartId,
             ProductId = request.ProductId,
-            Quantity = request.Quantity
+            Quantity = request.Quantity,
+            Price = request.ItemPrice
         };
-
-        newCartItem.SetPrice(request.ItemPrice);
 
         await cartItemsRepository.CreateCartItemAsync(newCartItem, cancellationToken);
 
@@ -31,7 +30,13 @@ internal sealed class AddItemToCartCommandHandler(ICartsRepository cartRepositor
 
         var cartResult = await cartRepository.GetCartByIdAsync(request.CartId, cancellationToken);
 
+        if (cartResult is null)
+            return Result.Failure<CartsResponse>(DomainErrors.Cart.CartNotFound);
+
         var cartItemsResult = await cartItemsRepository.GetItemsByCartIdAsync(request.CartId, cancellationToken);
+
+        if (cartItemsResult.Count() == 0)
+            return Result.Failure<CartsResponse>(DomainErrors.CartItem.CartItemNotFound);
 
         return Result.Success(new CartsResponse(cartResult.Id,
             cartResult.UserId,

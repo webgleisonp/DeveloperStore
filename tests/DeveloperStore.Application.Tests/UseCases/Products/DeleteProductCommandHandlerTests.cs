@@ -33,7 +33,7 @@ public class DeleteProductCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldDeleteProduct_WhenProductExists()
+    public async Task DeleteProductCommandHandler_ShouldDeleteProduct_WhenProductExists()
     {
         // Arrange
         var existingProduct = _faker.Generate();
@@ -53,7 +53,7 @@ public class DeleteProductCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnFailure_WhenProductDoesNotExist()
+    public async Task DeleteProductCommandHandler_ShouldReturnFailure_WhenProductDoesNotExist()
     {
         // Arrange
         var command = new DeleteProductCommand(1);
@@ -73,7 +73,7 @@ public class DeleteProductCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldThrowException_WhenRepositoryFails()
+    public async Task DeleteProductCommandHandler_ShouldThrowException_WhenRepositoryFails()
     {
         // Arrange
         var existingProduct = _faker.Generate();

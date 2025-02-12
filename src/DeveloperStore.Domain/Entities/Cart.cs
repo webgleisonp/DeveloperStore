@@ -7,7 +7,7 @@ public class Cart
     public DateTime CreateDate { get; set; }
     public bool Active { get; set; }
 
-    public virtual User User { get; set; }
+    public virtual User User { get; set; } = default!;
 
-    public virtual ICollection<CartItem> CartItems { get; set; }
+    public virtual ICollection<CartItem> CartItems { get; set; } = [];
 }
