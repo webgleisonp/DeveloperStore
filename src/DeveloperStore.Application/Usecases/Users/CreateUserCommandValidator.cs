@@ -1,4 +1,5 @@
 ﻿using DeveloperStore.Application.GlobalValidators;
+using DeveloperStore.Domain.Enums;
 using FluentValidation;
 
 namespace DeveloperStore.Application.Usecases.Users;
@@ -27,8 +28,8 @@ public sealed class CreateUserCommandValidator : AbstractValidator<CreateUserCom
         RuleFor(p => p.Phone)
             .NotEmpty();
         RuleFor(p => p.Status)
-            .NotEmpty();
+            .IsInEnum();
         RuleFor(p => p.Role)
-            .NotEmpty();
+            .IsInEnum();
     }
 }

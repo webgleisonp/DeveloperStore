@@ -9,7 +9,6 @@ public sealed class AddItemToCartCommandValidator : AbstractValidator<AddItemToC
     public AddItemToCartCommandValidator(ICartsRepository cartsRepository, IProductRepository productRepository)
     {
         RuleFor(p => p.CartId)
-            .NotEmpty()
             .MustAsync(async (cartId, cancellation) =>
             {
                 var cart = await cartsRepository.GetCartByIdAsync(cartId, cancellation);
@@ -19,7 +18,6 @@ public sealed class AddItemToCartCommandValidator : AbstractValidator<AddItemToC
             .WithErrorCode(DomainErrors.Cart.CartNotFound.Code)
             .WithMessage(DomainErrors.Cart.CartNotFound.Message);
         RuleFor(p => p.ProductId)
-            .NotEmpty()
             .MustAsync(async (produtcId, cancellation) =>
             {
                 var product = await productRepository.GetProductByIdAsync(produtcId, cancellation);

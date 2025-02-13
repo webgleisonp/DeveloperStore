@@ -9,7 +9,6 @@ public sealed class CreateCartCommandValidator : AbstractValidator<CreateCartCom
     public CreateCartCommandValidator(IUserRepository userRepository, IProductRepository productRepository)
     {
         RuleFor(p => p.UserId)
-            .NotEmpty()
             .MustAsync(async (userId, cancelation) =>
             {
                 var user = await userRepository.GetUserByIdAsync(userId, cancelation);
@@ -19,10 +18,10 @@ public sealed class CreateCartCommandValidator : AbstractValidator<CreateCartCom
             .WithErrorCode(DomainErrors.User.UserNotFound.Code)
             .WithMessage(DomainErrors.User.UserNotFound.Message);
         RuleFor(p => p.CreateDate).NotEmpty();
-        RuleFor(p => p.CartItens)
+        RuleFor(p => p.CartItems)
             .NotEmpty();
 
-        RuleForEach(p => p.CartItens)
+        RuleForEach(p => p.CartItems)
             .NotNull()
             .SetValidator(new CartItemsRequestValidator(productRepository));
     }

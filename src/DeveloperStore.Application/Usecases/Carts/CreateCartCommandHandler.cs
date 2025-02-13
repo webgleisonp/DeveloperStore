@@ -23,7 +23,7 @@ internal sealed class CreateCartCommandHandler(ICartsRepository cartsRepository,
             Active = true,
         };
 
-        foreach (var cartItem in request.CartItens)
+        foreach (var cartItem in request.CartItems)
         {
             var newCartItem = new CartItem
             {

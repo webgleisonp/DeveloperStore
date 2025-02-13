@@ -9,7 +9,6 @@ public sealed class CartItemsRequestValidator : AbstractValidator<CartItemsReque
     public CartItemsRequestValidator(IProductRepository productRepository)
     {
         RuleFor(p => p.ProductId)
-            .NotEmpty()
             .MustAsync(async (productId, cancelation) =>
             {
                 var product = await productRepository.GetProductByIdAsync(productId, cancelation);
